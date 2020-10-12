@@ -17,7 +17,7 @@ namespace Musala.Models.DTO
         [RegularExpression(@"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b", ErrorMessage = "Dirección Ipv4 incorrecta")]
         public string Ipv4 { get; set; }
 
-        public string ValueForAvoidDuplicity()
+        public string ValueToAvoidDuplicate()
         {
             return Name + Ipv4;
         }

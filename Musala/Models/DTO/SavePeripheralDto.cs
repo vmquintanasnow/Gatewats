@@ -20,7 +20,7 @@ namespace Musala.Models.DTO
         [Required]
         public string GatewayId { get; set; }
 
-        public string ValueForAvoidDuplicity()
+        public string ValueToAvoidDuplicate()
         {
             return Vendor + GatewayId;
         }

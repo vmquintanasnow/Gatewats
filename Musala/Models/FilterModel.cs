@@ -6,7 +6,7 @@ namespace Musala.Models
     public class FilterModel
     {
         [Required]
-        [Range(1,double.MaxValue )]
+        [Range(1,int.MaxValue )]
         public int Page { get; set; }
         public int Limit { get; set; }
         public int Offset { get; set; }
