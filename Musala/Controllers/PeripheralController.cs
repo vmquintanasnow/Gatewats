@@ -77,7 +77,7 @@ namespace Musala.Controllers
                         ValueForAvoidDuplicate = p.Vendor + p.GatewayId.ToString()
                     }
                 )
-                .AnyAsync(keys => keys.ValueForAvoidDuplicate.Equals(savePeripheral.ValueForAvoidDuplicity()))
+                .AnyAsync(keys => keys.ValueForAvoidDuplicate.Equals(savePeripheral.ValueToAvoidDuplicate()))
                 .ConfigureAwait(false);
 
             if (isCreated)

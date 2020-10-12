@@ -30,7 +30,6 @@ namespace Musala.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([ModelBinder(typeof(QueryModelBinder))] QueryObject query)
         {
-
             try
             {
                 var response = await _context.Gateway
@@ -54,16 +53,12 @@ namespace Musala.Controllers
                 var factory = new ErrorPayloadFactory(new string[] { exception.Message }, "Sorry, there is a problem with the input values.");
                 return new CustomPayloadResult(factory.GetPayload(), 400);
             }
-
-
         }
 
         // POST: gateways/
         [HttpPost]
         public IActionResult Post(SaveGatewayDto saveGatewayDto)
         {
-
-
             Gateway data = _mapper.SaveGatewayDtoToGateway(saveGatewayDto);
 
             var isCreated = _context.Gateway.Select(
@@ -73,7 +68,7 @@ namespace Musala.Controllers
                         ValueForAvoidDuplicate = gateway.Name + gateway.Ipv4
                     }
                 )
-                .Any(keys => keys.ValueForAvoidDuplicate.Equals(saveGatewayDto.ValueForAvoidDuplicity()));
+                .Any(keys => keys.ValueForAvoidDuplicate.Equals(saveGatewayDto.ValueToAvoidDuplicate()));
 
             if (isCreated)
             {
