@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Musala.Controllers;
+using Musala.DAL;
 using Musala.Models;
 using Musala.Resources;
 using Musala.Resources.Mapper;
@@ -14,7 +15,7 @@ namespace MusalaUnitTest
     {
         public PeripheralTests()
             : base(
-                new DbContextOptionsBuilder<MusalaTestContext>()
+                new DbContextOptionsBuilder<MusalaContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options)
         { }
@@ -24,7 +25,7 @@ namespace MusalaUnitTest
         [Fact]
         public async void TestFindAll()
         {
-            using var context= new MusalaTestContext(ContextOptions);
+            using var context= new MusalaContext(ContextOptions);
             controller = new PeripheralsController(context, new MusalaMapper());
             var result = await controller.GetAll(null) as IActionResult;
             Assert.IsAssignableFrom<SuccessPayloadResult>(result);

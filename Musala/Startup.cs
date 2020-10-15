@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,12 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Musala.Models;
-using Musala.Resources;
-using Musala.Resources.Errors;
-using Musala.Resources.Mapper;
-using Musala.Resources.Payload;
+using System.Net;
 using System.Linq;
+using AutoMapper;
+using Musala.Business.Payload;
+using Musala.Business.Mappers;
+using Musala.Business.Services;
+using Musala.Business.Exceptions;
+using Musala.DAL;
 
 namespace Musala
 {
@@ -27,13 +28,18 @@ namespace Musala
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IMapper, MusalaMapper>();
+            #region Dependency Injection
+            services.AddAutoMapper(typeof(GatewayProfile), typeof(DeviceProfile));
+            services.AddDbContext<MusalaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IGatewayService, GatewayService>();
+            services.AddScoped<IDeviceService, DeviceService>();
+            #endregion
+            
+
             services.AddControllers();
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-            services.AddDbContext<MusalaTestContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);          
 
             //services.AddDbContext<MusalaTestContext>(
             //    optionsAction =>
@@ -49,15 +55,14 @@ namespace Musala
                         ).ToArray();
 
                     var factory = new ErrorPayloadFactory(error: errors, message: "Invalid input.");
-                    return new CustomPayloadResult(factory.GetPayload(), 400);
+                    return new PayloadResult(factory.GetPayload(), HttpStatusCode.BadRequest);
                 };
             });
 
             services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Api Docs", Version = "1.0" });
-            }
-
+                {
+                    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Api Docs", Version = "1.0" });
+                }
             );
         }
 

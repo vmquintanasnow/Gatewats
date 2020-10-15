@@ -1,7 +1,6 @@
-﻿
-
-using Microsoft.EntityFrameworkCore;
-using Musala.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Musala.DAL;
+using Musala.Domain.Entity;
 using System;
 using System.Collections.Generic;
 
@@ -9,18 +8,18 @@ namespace MusalaUnitTest
 {
     public class DBControllerTest
     {
-        protected DBControllerTest(DbContextOptions<MusalaTestContext> contextOptions)
+        protected DBControllerTest(DbContextOptions<MusalaContext> contextOptions)
         {
             ContextOptions = contextOptions;
 
             Seed();
         }
 
-        protected DbContextOptions<MusalaTestContext> ContextOptions { get; }
+        protected DbContextOptions<MusalaContext> ContextOptions { get; }
 
         private void Seed()
         {
-            using (var context = new MusalaTestContext(ContextOptions))
+            using (var context = new MusalaContext(ContextOptions))
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
@@ -64,13 +63,13 @@ namespace MusalaUnitTest
                     }
                 };
 
-                List<Peripheral> peripherals = new List<Peripheral>();
+                List<Device> peripherals = new List<Device>();
 
                 for (int i = 0; i < 10; i++)
                 {
-                    peripherals.Add(new Peripheral()
+                    peripherals.Add(new Device()
                     {
-                        Vendor = $"Peripheral {i+1}",
+                        Vendor = $"Device {i+1}",
                         Status = true,
                         DateCreation = DateTime.Now,
                         Gateway = gateway1,
@@ -78,9 +77,9 @@ namespace MusalaUnitTest
 
                     if (i < 9)
                     {
-                        peripherals.Add(new Peripheral()
+                        peripherals.Add(new Device()
                         {
-                            Vendor = $"Peripheral {i + 11}",
+                            Vendor = $"Device {i + 11}",
                             Status = true,
                             DateCreation = DateTime.Now,
                             Gateway = gateway2,
