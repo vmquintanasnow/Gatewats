@@ -65,7 +65,7 @@ namespace Musala.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(int id)
         {
-            var devicePayload = await _service.FindById(id);
+            var devicePayload = await _service.FindById(id).ConfigureAwait(false);
             return new PayloadResult(devicePayload, HttpStatusCode.OK);
         }
     }
