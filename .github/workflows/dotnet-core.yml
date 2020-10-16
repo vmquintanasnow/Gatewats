@@ -20,5 +20,5 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build ".\Musala.csproj" --configuration Release --no-restore 
+      run: dotnet build .\Musala\Musala.csproj" --configuration Release --no-restore 
  
