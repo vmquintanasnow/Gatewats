@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Product>Snow</Product>
-    <Company>Snow</Company>
-    <Authors>Snow</Authors>
+    <Product>Musala.Business</Product>
+    <Company>Musala.Business</Company>
+    <Authors>Musala.Business</Authors>
     <Version>1.0.1</Version>
   </PropertyGroup>
 
